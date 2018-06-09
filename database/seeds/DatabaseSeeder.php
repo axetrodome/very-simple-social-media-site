@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Tag;
+use App\Models\Post;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,7 +13,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-    	factory(App\Tag::class,20)->create();
-        factory(App\Post::class,20)->create();
+        $this->call(TagsTableSeeder::class);
     }
 }

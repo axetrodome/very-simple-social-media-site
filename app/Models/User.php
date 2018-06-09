@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
+use App\Traits\CreatePosts;
+use App\Traits\PostComments;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 
 
 class User extends Authenticatable
 {
     
-    use Notifiable;
+    use Notifiable,CreatePosts,PostComments;
 
     /**
      * The attributes that are mass assignable.
@@ -35,16 +37,6 @@ class User extends Authenticatable
     public function getRouteKeyName()
     {
         return 'slug';
-    }
-
-    public function posts()
-    {
-        return $this->hasMany(Post::class);
-    }
-
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
     }
 
     public function likes()
@@ -133,12 +125,6 @@ class User extends Authenticatable
         return $this->friendRequests()->where('id',$user->id)->first()->pivot->update([
             'confirmed' => true,
         ]);
-    }
-
-    public function publish(Post $post)
-    {
-        $this->posts()->save($post);
-        $post->tags()->sync(request('tags'));
     }
 
     public function scopeSearch($query,$s)

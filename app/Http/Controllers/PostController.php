@@ -17,7 +17,7 @@ class PostController extends Controller
 	{
 		$post = new Post;
 		
-		auth()->user()->publish(
+		me()->write(
 			new Post([
 				'title' => request('title'),
 				'slug' => str_slug(request('title'),'-'),
@@ -37,8 +37,8 @@ class PostController extends Controller
 
 	public function edit(Post $post)
 	{
+		
         $tags = Tag::all();
-
 
 		return view('posts.edit',compact('post','tags'));
 

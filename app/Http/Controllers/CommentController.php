@@ -16,10 +16,7 @@ class CommentController extends Controller
     		'body' => 'required|min:2'
     	]);
 
-        $comment = new Comment;
-        $comment->body = request('body');
-        $comment->user()->associate(auth()->user());
-        $post->comments()->save($comment);
+        me()->addComment($post,request('body'));
 
         return back();
     }
@@ -30,12 +27,7 @@ class CommentController extends Controller
             'body' => 'required|min:2'
         ]);
 
-        $reply = new Comment;
-        $reply->body = request('body');
-        $reply->user()->associate(auth()->user());
-        $reply->parent_id = $comment->id;
-        
-        $post->comments()->save($reply);
+        me()->addReply($post,$comment,request('body'));
 
         return back();
     }
